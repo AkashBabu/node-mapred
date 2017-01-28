@@ -1,0 +1,26 @@
+{
+  "name": "node-mapred",
+  "version": "1.0.0",
+  "description": "Map Reduce implementation of mongodb for nodejs objects",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/AkashBabu/node-mapred.git"
+  },
+  "keywords": [
+    "map",
+    "reduce",
+    "mapreduce",
+    "map-reduce",
+    "node-mapred"
+  ],
+  "author": "Akash Babu <001akashbabu@gmail.com>",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/AkashBabu/node-mapred/issues"
+  },
+  "homepage": "https://github.com/AkashBabu/node-mapred#readme"
+}

@@ -1,28 +1,8 @@
 
-
-
-
-
-
-
-
-
-
-
-# node-mapred
-Map Reduce implementation of mongodb for nodejs
-
-
-### Installation
-
-> npm i node-mapred --save
-
-### Usage
-
-```
-var MapRed = require("node-mapred");
+var MapRed = require("./index")
 
 var mapred = new MapRed();
+
 
 
 var info = [{
@@ -49,9 +29,3 @@ mapred.exec(info)
     .result(function (result) {
         console.log(result);
     })
-
-```
-
-### License
-
-MIT
