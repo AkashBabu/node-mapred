@@ -6,26 +6,58 @@ var mapred = new MapRed();
 
 
 var info = [{
+    type: "fruit",
     name: "apples",
-    age: 21
+    qty: 21
 }, {
-        name: "mangoes",
-        age: 23
-    }, {
-        name: "apples",
-        age: 2
-    }, {
-        name: "mangoes",
-        age: 3
-    }]
+    type: "fruit",
+    name: "mangoes",
+    qty: 23
+}, {
+    type: "fruit",
+    name: "apples",
+    qty: 2
+}, {
+    type: "fruit",
+    name: "mangoes",
+    qty: 3
+}, {
+    type: "animal",
+    name: "dogs",
+    qty: 3
+}, {
+    type: "animal",
+    name: "cats",
+    qty: 3
+}, {
+    type: "animal",
+    name: "dogs",
+    qty: 7
+}]
 
 mapred.exec(info)
     .map(function () {
-        mapred.emit(this.name, this.age)
+        mapred.emit(this.name, this.qty)
     })
     .reduce(function (key, values) {
-        return values.reduce((t, v) => t + v);
+        return values.reduce((sum, val) => sum + val);
     })
     .result(function (result) {
-        console.log(result);
+        console.log(result); 
+    })
+
+mapred.exec(info)
+    .map(function () {
+        var self = this
+        var key = {
+            type: self.type,
+            name: self.name
+        }
+        mapred.emit(key, this.qty)
+    })
+    .reduce(function (key, values) {
+        return values.reduce((sum, val) => sum + val);
+    })
+    .result(function (result) {
+        console.log(result); 
     })

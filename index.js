@@ -13,11 +13,17 @@ var util = require("util");
 
 var MapRed = function () {
 
+    this.objectKey = false;
     this.keys = [];
     this.data = {};
     this.results = [];
 
-    return this;
+    
+    var self = this
+    return {
+        emit: self.emit.bind(self),
+        exec: self.exec.bind(self)
+    }
 }
 
 MapRed.prototype.exec = function (arr) {
@@ -34,6 +40,11 @@ MapRed.prototype.exec = function (arr) {
 }
 
 MapRed.prototype.emit = function (key, value) {
+    if(key.constructor == Object){
+        this.objectKey = true
+        key = JSON.stringify(key)
+    }
+
     if (this.keys.indexOf(key) == -1) {
         this.keys.push(key);
         this.data[key] = [value];
@@ -48,7 +59,7 @@ MapRed.prototype.map = function (cb) {
         if(!util.isObject(doc)) {
             throw new Error("Only Array of Objects are allowed");
         }
-        cb.bind(doc)()
+        cb.apply(doc)
     });
 
     return {
@@ -60,7 +71,7 @@ MapRed.prototype.reduce = function (cb) {
     var self = this;
     for (var key in self.data) {
         var res = {
-            _id: key,
+            _id: this.objectKey ? JSON.parse(key): key,
             value: cb(key, self.data[key])
         }
         self.results.push(res);
