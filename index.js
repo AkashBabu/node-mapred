@@ -40,7 +40,7 @@ MapRed.prototype.exec = function (arr) {
 }
 
 MapRed.prototype.emit = function (key, value) {
-    if(key.constructor == Object){
+    if(typeof key == 'object'){
         this.objectKey = true
         key = JSON.stringify(key)
     }

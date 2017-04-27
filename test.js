@@ -51,13 +51,52 @@ describe("Node-MapReduce for JSON", () => {
                 return values.reduce((t, v) => t + v)
             })
             .result(function(result) {
-                console.log("result:", result);
+                // console.log("result:", result);
                 result.should.be.an('array')
                 result.length.should.be.eql(2)
                 result.filter(r => r._id == "orange")[0].value.should.be.eql(10)
                 result.filter(r => r._id == "apple")[0].value.should.be.eql(14)
             })
 
+    })
+    it("should apply even if the even is undefined in map stage", () => {
+        var mapred = new Mapred()
+        var input = [
+            {
+                fruit: "orange",
+                qty: 3
+            }, {
+                fruit: "apple",
+                qty: 5
+            }, {
+                fruit: "orange",
+                qty: 7
+            }, {
+                fruit: "apple",
+                qty: 9
+            }, {
+                qty: 10
+            }, {
+                qty: 10
+            }
+        ]
+
+        mapred  
+            .exec(input)
+            .map(function() {
+                mapred.emit(this.fruit, this.qty)
+            })
+            .reduce(function(key, values) {
+                return values.reduce((t, v) => t + v)
+            })
+            .result(function(result) {
+                // console.log("result:", result);
+                result.should.be.an('array')
+                result.length.should.be.eql(3)
+                result.filter(r => r._id == "orange")[0].value.should.be.eql(10)
+                result.filter(r => r._id == "apple")[0].value.should.be.eql(14)
+                result.filter(r => r._id == 'undefined')[0].value.should.be.eql(20)
+            })
     })
     it("Mapping should be possible even for key of type Object", () => {
         var mapred = new Mapred()
@@ -101,7 +140,7 @@ describe("Node-MapReduce for JSON", () => {
                 return values.reduce((t, v) => t + v)
             })
             .result(function(result) {
-                console.log("result:", result);
+                // console.log("result:", result);
                 result.should.be.an('array')
                 result.length.should.be.eql(3)
                 result.forEach(function(r) {
